@@ -57,7 +57,7 @@ nav {
     text-align: center;
     position: relative;
     /* PAS HIER DE NAAM VAN JE FOTO AAN: */
-    background-image: linear-gradient(to bottom, rgba(11, 11, 11, 0.4) 0%, rgba(11, 11, 11, 1) 100%), url('randstad\ logo.png');
+    background-image: linear-gradient(to bottom, rgba(11, 11, 11, 0.4) 0%, rgba(11, 11, 11, 1) 100%), url('randstad logo.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -150,4 +150,5 @@ footer { padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.05); text-ali
     .banner-box { flex-direction: column; text-align: center; gap: 30px; }
     .nav-links { display: none; }
     .hero-btns { flex-direction: column; }
+
 }
