@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RandStad | Your Home for Custom RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f40552;
+            --bg: #080808;
+            --card-bg: #0f0f0f;
+            --border: rgba(255,255,255,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: var(--bg); color: white; overflow-x: hidden; }
+
+        /* Navigatie */
+        nav { height: 80px; border-bottom: 1px solid var(--border); display: flex; align-items: center; background: #000; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-weight: 900; letter-spacing: 4px; font-size: 20px; color: white; text-decoration: none; }
+        .nav-links a { color: #555; text-decoration: none; font-size: 12px; font-weight: 800; margin-right: 25px; letter-spacing: 1px; }
+        .nav-links a:hover { color: white; }
+        .nav-cta { color: var(--primary); font-size: 11px; font-weight: 900; text-decoration: none; letter-spacing: 1px; border: 1px solid var(--primary); padding: 10px 20px; }
+
+        /* Hero */
+        .hero { height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        .hero h1 { font-size: 60px; font-weight: 900; line-height: 0.9; margin-bottom: 20px; }
+        .accent-text { color: var(--primary); }
+        .hero p { color: #666; max-width: 600px; margin: 0 auto 30px; font-weight: 500; }
+        .hero-btns a { text-decoration: none; padding: 15px 35px; font-weight: 900; font-size: 12px; letter-spacing: 1px; margin: 0 10px; display: inline-block; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { border: 1px solid #5865F2; color: #5865F2; }
+
+        /* LIVE STATS SECTIE */
+        .live-stats { padding: 40px 0; background: #050505; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .stat-item { background: var(--card-bg); padding: 25px; border: 1px solid var(--border); }
+        .stat-item h3 { font-size: 35px; font-weight: 900; margin-bottom: 5px; }
+        .stat-item p { font-size: 10px; letter-spacing: 2px; color: #444; text-transform: uppercase; font-weight: 800; }
+
+        /* Info Sectie */
+        .info-section { padding: 80px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .card { background: var(--card-bg); padding: 40px; border: 1px solid var(--border); }
+        .card h2 { font-size: 22px; margin-bottom: 15px; color: white; }
+        .card p { color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .link { color: var(--primary); text-decoration: none; font-weight: 800; font-size: 12px; }
+
+        footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--border); color: #222; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">RandStad</div>
+            <div class="nav-links">
+                <a href="index.html">HOME</a>
+                <a href="forum.html">FORUM</a>
+                <a href="docs.html">DOCS</a>
+            </div>
+            <div class="nav-right">
+                <a href="https://www.roblox.com/games/115449996785216/Nova-RolePlay-V2" class="nav-cta" target="_blank">JOIN NOW</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>THE EVOLUTION OF <br><span class="accent-text">ROLEPLAY.</span></h1>
+            <p>RandStad is a Roblox Roleplay Game where your story begins.</p>
+            <div class="hero-btns">
+                <a href="https://www.roblox.com/games/115449996785216/Nova-RolePlay-V2" class="btn-primary" target="_blank">Join GAME</a>
+                <a href="https://discord.gg/pgM6dwYmdp" class="btn-secondary" target="_blank">Join Discord</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="live-stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3 id="pRoblox">0</h3>
+                <p>Citizens In-Game</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="pOnline" style="color: #5865F2;">0</h3>
+                <p>Discord Online</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="pTotal">293</h3>
+                <p>Totaal Leden</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="pOffline" style="color: #222;">0</h3>
+                <p>Leden Offline</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="container">
+            <div class="grid">
+                <div class="card">
+                    <h2>SECURE & STABLE</h2>
+                    <p>RandStad is gebouwd voor stabiliteit. Geen lag, maar een vloeiende ervaring voor alle spelers.</p>
+                    <a href="docs.html" class="link">MEER INFO →</a>
+                </div>
+                <div class="card">
+                    <h2>COMMUNITY DRIVEN</h2>
+                    <p>Onze stad groeit door jullie. Met 293 leden en dagelijkse updates bouwen we samen aan de toekomst.</p>
+                    <a href="https://discord.gg/pgM6dwYmdp" class="link" target="_blank">WORD LID →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 RANDSTAD ROLEPLAY. NIET GELIEERD AAN ROBLOX CORPORATION.</p>
+        </div>
+    </footer>
+
+    <script>
+        const UNIVERSE_ID = "9556267614";
+        const DISCORD_ID = "1255390370485768223";
+        const TOTAAL_LEDEN = 293; // Hier heb ik 293 ingevuld
+
+        async function updateLiveStats() {
+            // ROBLOX
+            try {
+                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent('https://games.roblox.com/v1/games?universeIds=' + UNIVERSE_ID)}`);
+                const data = await res.json();
+                if (data.data && data.data[0]) {
+                    document.getElementById('pRoblox').innerText = data.data[0].playing;
+                }
+            } catch (e) { console.log("Roblox error"); }
+
+            // DISCORD
+            try {
+                const res = await fetch(`https://discord.com/api/guilds/${DISCORD_ID}/widget.json`);
+                const data = await res.json();
+                if (data) {
+                    const online = data.presence_count;
+                    const offline = TOTAAL_LEDEN - online;
+                    
+                    document.getElementById('pOnline').innerText = online;
+                    document.getElementById('pTotal').innerText = TOTAAL_LEDEN;
+                    document.getElementById('pOffline').innerText = offline > 0 ? offline : 0;
+                }
+            } catch (e) { console.log("Discord error"); }
+        }
+
+        window.onload = () => {
+            updateLiveStats();
+            setInterval(updateLiveStats, 5000); // Ververst elke 5 seconden
+        };
+    </script>
+</body>
+</html>
