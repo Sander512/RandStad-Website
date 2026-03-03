@@ -16,7 +16,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         body { background: var(--bg); color: white; overflow-x: hidden; }
 
-        /* Navigatie */
         nav { height: 80px; border-bottom: 1px solid var(--border); display: flex; align-items: center; background: #000; position: sticky; top: 0; z-index: 1000; }
         .nav-container { width: 100%; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .logo { font-weight: 900; letter-spacing: 4px; font-size: 20px; color: white; text-decoration: none; }
@@ -24,7 +23,6 @@
         .nav-links a:hover { color: white; }
         .nav-cta { color: var(--primary); font-size: 11px; font-weight: 900; text-decoration: none; letter-spacing: 1px; border: 1px solid var(--primary); padding: 10px 20px; }
 
-        /* Hero */
         .hero { height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
         .hero h1 { font-size: 60px; font-weight: 900; line-height: 0.9; margin-bottom: 20px; }
         .accent-text { color: var(--primary); }
@@ -39,8 +37,10 @@
         .stat-item { background: var(--card-bg); padding: 25px; border: 1px solid var(--border); }
         .stat-item h3 { font-size: 35px; font-weight: 900; margin-bottom: 5px; }
         .stat-item p { font-size: 10px; letter-spacing: 2px; color: #444; text-transform: uppercase; font-weight: 800; }
+        
+        .refresh-btn { background:none; border:1px solid #222; color:#444; font-size:9px; padding:5px 15px; cursor:pointer; margin-top: 20px; transition: 0.3s; }
+        .refresh-btn:hover { border-color: var(--primary); color: white; }
 
-        /* Info Sectie */
         .info-section { padding: 80px 0; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .card { background: var(--card-bg); padding: 40px; border: 1px solid var(--border); }
@@ -83,14 +83,14 @@
         </div>
     </header>
 
-    <section class="live-stats">
+    <section class="live-stats" style="text-align: center;">
         <div class="stats-grid">
             <div class="stat-item">
-                <h3 id="pRoblox">0</h3>
+                <h3 id="pRoblox">..</h3>
                 <p>Citizens In-Game</p>
             </div>
             <div class="stat-item">
-                <h3 id="pOnline" style="color: #5865F2;">0</h3>
+                <h3 id="pOnline" style="color: #5865F2;">..</h3>
                 <p>Discord Online</p>
             </div>
             <div class="stat-item">
@@ -98,10 +98,11 @@
                 <p>Totaal Leden</p>
             </div>
             <div class="stat-item">
-                <h3 id="pOffline" style="color: #222;">0</h3>
+                <h3 id="pOffline" style="color: #222;">..</h3>
                 <p>Leden Offline</p>
             </div>
         </div>
+        <button class="refresh-btn" onclick="updateStats()">SYNC LIVE DATA</button>
     </section>
 
     <section class="info-section">
@@ -130,36 +131,45 @@
     <script>
         const UNIVERSE_ID = "9556267614";
         const DISCORD_ID = "1255390370485768223";
-        const TOTAAL_LEDEN = 293; // Hier heb ik 293 ingevuld
+        const TOTAAL_LEDEN = 293;
 
-        async function updateLiveStats() {
+        async function updateStats() {
             // ROBLOX
-            try {
-                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent('https://games.roblox.com/v1/games?universeIds=' + UNIVERSE_ID)}`);
-                const data = await res.json();
-                if (data.data && data.data[0]) {
-                    document.getElementById('pRoblox').innerText = data.data[0].playing;
-                }
-            } catch (e) { console.log("Roblox error"); }
+            const robloxProxy = `https://api.allorigins.win/get?url=${encodeURIComponent('https://games.roblox.com/v1/games?universeIds=' + UNIVERSE_ID)}&t=${Date.now()}`;
+            fetch(robloxProxy)
+                .then(res => res.json())
+                .then(data => {
+                    const contents = JSON.parse(data.contents);
+                    if (contents.data && contents.data[0]) {
+                        document.getElementById('pRoblox').innerText = contents.data[0].playing;
+                    }
+                }).catch(() => document.getElementById('pRoblox').innerText = "0");
 
             // DISCORD
-            try {
-                const res = await fetch(`https://discord.com/api/guilds/${DISCORD_ID}/widget.json`);
-                const data = await res.json();
-                if (data) {
-                    const online = data.presence_count;
-                    const offline = TOTAAL_LEDEN - online;
-                    
+            // Probeer eerst direct (sneller), daarna proxy
+            fetch(`https://discord.com/api/guilds/${DISCORD_ID}/widget.json?t=${Date.now()}`)
+                .then(res => res.json())
+                .then(data => {
+                    const online = data.presence_count || 0;
                     document.getElementById('pOnline').innerText = online;
-                    document.getElementById('pTotal').innerText = TOTAAL_LEDEN;
-                    document.getElementById('pOffline').innerText = offline > 0 ? offline : 0;
-                }
-            } catch (e) { console.log("Discord error"); }
+                    document.getElementById('pOffline').innerText = Math.max(0, TOTAAL_LEDEN - online);
+                })
+                .catch(() => {
+                    const discordProxy = `https://api.allorigins.win/get?url=${encodeURIComponent('https://discord.com/api/guilds/'+DISCORD_ID+'/widget.json')}`;
+                    fetch(discordProxy)
+                        .then(res => res.json())
+                        .then(data => {
+                            const d = JSON.parse(data.contents);
+                            const online = d.presence_count || 0;
+                            document.getElementById('pOnline').innerText = online;
+                            document.getElementById('pOffline').innerText = Math.max(0, TOTAAL_LEDEN - online);
+                        });
+                });
         }
 
         window.onload = () => {
-            updateLiveStats();
-            setInterval(updateLiveStats, 5000); // Ververst elke 5 seconden
+            updateStats();
+            setInterval(updateStats, 30000); 
         };
     </script>
 </body>
